@@ -1,0 +1,162 @@
+{
+  "brand": {
+    "logoAlt": "ElectroPi logo",
+    "tagline": "Productivity Hub",
+    "workspace": "Task workspace"
+  },
+  "navigation": {
+    "primary": "Primary navigation",
+    "projects": "Projects",
+    "tasks": "All Tasks",
+    "settings": "Settings",
+    "newTask": "New Task",
+    "openMenu": "Open navigation menu",
+    "closeMenu": "Close navigation menu"
+  },
+  "common": {
+    "close": "Close",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleting": "Deleting…",
+    "dismiss": "Dismiss notification",
+    "save": "Save",
+    "saving": "Saving…",
+    "retry": "Retry",
+    "loading": "Loading",
+    "breadcrumb": "Breadcrumb"
+  },
+  "pages": {
+    "projects": {
+      "title": "Projects",
+      "subtitle": "Organize your work and keep every task on track."
+    },
+    "projectDetails": {
+      "title": "Project details"
+    },
+    "tasks": {
+      "title": "All Tasks",
+      "subtitle": "Review every task, focus by status, and keep work moving."
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Choose how ElectroPi looks and reads on this device."
+    },
+    "notFound": {
+      "title": "Page not found",
+      "description": "The page you requested does not exist or may have moved.",
+      "back": "Back to projects"
+    }
+  },
+  "projects": {
+    "active": "Active",
+    "create": "Create Project",
+    "viewProject": "View Project",
+    "noDescription": "No description was added for this project.",
+    "createdOn": "Created",
+    "actions": {
+      "edit": "Edit project",
+      "delete": "Delete project"
+    },
+    "form": {
+      "createTitle": "Create project",
+      "editTitle": "Edit project",
+      "name": "Project name",
+      "description": "Description"
+    },
+    "delete": {
+      "title": "Delete project?",
+      "message": "This action cannot be undone. A project that contains tasks cannot be deleted."
+    },
+    "states": {
+      "emptyTitle": "No projects yet",
+      "emptyDescription": "Create your first project to organize related tasks in one place.",
+      "emptyAction": "Create your first project",
+      "errorTitle": "Projects could not be loaded",
+      "detailsErrorTitle": "Project could not be loaded"
+    },
+    "feedback": {
+      "created": "Project created successfully.",
+      "updated": "Project updated successfully.",
+      "deleted": "Project deleted successfully.",
+      "deleteConflict": "Delete the project's tasks before deleting the project."
+    }
+  },
+  "tasks": {
+    "create": "Add Task",
+    "noDescription": "No description was added for this task.",
+    "overdue": "Overdue",
+    "actions": {
+      "edit": "Edit task",
+      "delete": "Delete task",
+      "changeStatus": "Change task status"
+    },
+    "filter": {
+      "label": "Filter tasks by status"
+    },
+    "form": {
+      "createTitle": "Create task",
+      "editTitle": "Edit task",
+      "title": "Task title",
+      "description": "Description",
+      "status": "Status",
+      "dueDate": "Due date",
+      "project": "Project",
+      "selectProject": "Select a project"
+    },
+    "delete": {
+      "title": "Delete task?",
+      "message": "This task will be permanently deleted. This action cannot be undone."
+    },
+    "states": {
+      "emptyTitle": "No tasks found",
+      "emptyDescription": "Create a task or select a different status filter.",
+      "emptyAction": "Create a task",
+      "errorTitle": "Tasks could not be loaded",
+      "projectEmptyTitle": "This project has no tasks",
+      "projectEmptyDescription": "Add the first task to start tracking work for this project.",
+      "columnEmpty": "No tasks in this status."
+    },
+    "feedback": {
+      "created": "Task created successfully.",
+      "updated": "Task updated successfully.",
+      "deleted": "Task deleted successfully.",
+      "statusUpdated": "Task status updated.",
+      "statusUpdateFailed": "The task status could not be updated. It has been restored.",
+      "projectsUnavailable": "Projects could not be loaded. Task creation is temporarily unavailable."
+    }
+  },
+  "statuses": {
+    "All": "All",
+    "ToDo": "To Do",
+    "InProgress": "In Progress",
+    "Done": "Done"
+  },
+  "validation": {
+    "projectNameRequired": "Project name is required.",
+    "taskTitleRequired": "Task title is required.",
+    "maxLength": "Use no more than {{count}} characters.",
+    "dueDateRequired": "Due date is required.",
+    "dueDatePast": "Choose today or a future date.",
+    "projectRequired": "Select a project."
+  },
+  "errors": {
+    "network": "The server could not be reached. Check that the API is running and try again.",
+    "badRequest": "Some information is invalid. Review the form and try again.",
+    "notFound": "The requested item could not be found.",
+    "conflict": "This action conflicts with the item's current state.",
+    "server": "The server encountered a problem. Try again shortly.",
+    "unexpected": "Something unexpected happened. Please try again."
+  },
+  "settings": {
+    "language": {
+      "title": "Language and direction",
+      "description": "Switch the interface language instantly. Arabic also mirrors the complete layout.",
+      "english": "English",
+      "arabic": "Arabic",
+      "ltr": "Left to right",
+      "rtl": "Right to left",
+      "note": "Your selection is stored only on this device and can be changed at any time.",
+      "changed": "Language preference updated."
+    }
+  }
+}

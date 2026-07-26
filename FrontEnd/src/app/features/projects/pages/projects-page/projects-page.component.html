@@ -1,0 +1,79 @@
+<main class="page-container">
+  <header class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <p class="text-sm font-bold uppercase tracking-[0.14em] text-primary">
+        {{ 'brand.workspace' | translate }}
+      </p>
+      <h1 class="mt-2 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+        {{ 'pages.projects.title' | translate }}
+      </h1>
+      <p class="mt-2 max-w-2xl text-muted">{{ 'pages.projects.subtitle' | translate }}</p>
+    </div>
+    <button type="button" class="btn-primary shrink-0" (click)="openCreateForm()">
+      <span class="text-xl" aria-hidden="true">＋</span>
+      {{ 'projects.create' | translate }}
+    </button>
+  </header>
+
+  @if (loading()) {
+    <div
+      class="grid gap-5 md:grid-cols-2 xl:grid-cols-3"
+      [attr.aria-label]="'common.loading' | translate"
+    >
+      @for (item of [1, 2, 3, 4, 5, 6]; track item) {
+        <div class="surface-card min-h-64 p-5">
+          <div class="skeleton h-7 w-20"></div>
+          <div class="skeleton mt-5 h-7 w-2/3"></div>
+          <div class="skeleton mt-3 h-4 w-full"></div>
+          <div class="skeleton mt-2 h-4 w-4/5"></div>
+          <div class="skeleton mt-16 h-10 w-full"></div>
+        </div>
+      }
+    </div>
+  } @else if (errorKey()) {
+    <app-empty-state
+      icon="!"
+      titleKey="projects.states.errorTitle"
+      [descriptionKey]="errorKey()!"
+      actionKey="common.retry"
+      (action)="loadProjects()"
+    />
+  } @else if (projects().length === 0) {
+    <app-empty-state
+      icon="□"
+      titleKey="projects.states.emptyTitle"
+      descriptionKey="projects.states.emptyDescription"
+      actionKey="projects.states.emptyAction"
+      (action)="openCreateForm()"
+    />
+  } @else {
+    <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      @for (project of projects(); track project.id) {
+        <app-project-card
+          [project]="project"
+          (edit)="openEditForm($event)"
+          (remove)="deleteTarget.set($event)"
+        />
+      }
+    </div>
+  }
+
+  @if (formOpen()) {
+    <app-project-form
+      [project]="editingProject()"
+      [saving]="saving()"
+      (saved)="saveProject($event)"
+      (cancelled)="closeForm()"
+    />
+  }
+
+  @if (deleteTarget()) {
+    <app-confirm-dialog
+      titleKey="projects.delete.title"
+      messageKey="projects.delete.message"
+      [busy]="deleting()"
+      (confirmed)="confirmDelete()"
+      (cancelled)="deleteTarget.set(null)"
+    />
+  }
+</main>

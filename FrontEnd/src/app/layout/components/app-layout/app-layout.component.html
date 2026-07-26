@@ -1,0 +1,115 @@
+<div class="min-h-screen bg-page text-ink">
+  @if (mobileMenuOpen()) {
+    <button
+      type="button"
+      class="fixed inset-0 z-40 bg-slate-950/40 lg:hidden"
+      [attr.aria-label]="'navigation.closeMenu' | translate"
+      (click)="closeMobileMenu()"
+    ></button>
+  }
+
+  <aside
+    class="fixed inset-y-0 start-0 z-50 w-[260px] flex-col border-e border-border bg-white shadow-sm lg:flex"
+    [class.flex]="mobileMenuOpen()"
+    [class.hidden]="!mobileMenuOpen()"
+  >
+    <a
+      routerLink="/projects"
+      class="flex h-16 items-center justify-center border-b border-border px-5"
+      (click)="closeMobileMenu()"
+    >
+      <img
+        src="/assets/logo.png"
+        [attr.alt]="'brand.logoAlt' | translate"
+        class="h-auto w-full max-w-[190px] object-contain"
+      />
+    </a>
+
+    <div class="px-3 py-3">
+      <a
+        routerLink="/tasks"
+        [queryParams]="{ create: 'true' }"
+        class="btn-primary min-h-11 w-full py-2 text-sm"
+        (click)="closeMobileMenu()"
+      >
+        <span class="text-lg" aria-hidden="true">＋</span>
+        {{ 'navigation.newTask' | translate }}
+      </a>
+    </div>
+
+    <nav class="flex-1 space-y-1 px-3" [attr.aria-label]="'navigation.primary' | translate">
+      <a
+        routerLink="/projects"
+        routerLinkActive="bg-primary text-white"
+        class="flex min-h-11 items-center gap-2.5 rounded-lg px-3 text-sm font-medium text-muted transition hover:bg-surface-soft hover:text-primary-dark"
+        (click)="closeMobileMenu()"
+      >
+        <svg
+          class="size-4 shrink-0"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path
+            d="M3 6.75A1.75 1.75 0 0 1 4.75 5h4.1c.54 0 1.05.25 1.38.68L11.25 7H19.25A1.75 1.75 0 0 1 21 8.75v8.5A1.75 1.75 0 0 1 19.25 19H4.75A1.75 1.75 0 0 1 3 17.25z"
+          />
+        </svg>
+        {{ 'navigation.projects' | translate }}
+      </a>
+      <a
+        routerLink="/tasks"
+        routerLinkActive="bg-primary text-white"
+        class="flex min-h-11 items-center gap-2.5 rounded-lg px-3 text-sm font-medium text-muted transition hover:bg-surface-soft hover:text-primary-dark"
+        (click)="closeMobileMenu()"
+      >
+        <span class="text-base" aria-hidden="true">☷</span>
+        {{ 'navigation.tasks' | translate }}
+      </a>
+    </nav>
+
+    <div class="border-t border-border p-3">
+      <a
+        routerLink="/settings"
+        routerLinkActive="bg-primary text-white"
+        class="flex min-h-11 items-center gap-2.5 rounded-lg px-3 text-sm font-medium text-muted transition hover:bg-surface-soft hover:text-primary-dark"
+        (click)="closeMobileMenu()"
+      >
+        <span class="text-base" aria-hidden="true">⚙</span>
+        {{ 'navigation.settings' | translate }}
+      </a>
+    </div>
+  </aside>
+
+  <div class="lg:ms-[260px]">
+    <header
+      class="sticky top-0 z-30 flex h-16 items-center border-b border-border bg-page/90 px-4 backdrop-blur sm:px-6 lg:px-8"
+    >
+      <button
+        type="button"
+        class="icon-btn me-2 lg:hidden"
+        [attr.aria-label]="'navigation.openMenu' | translate"
+        (click)="mobileMenuOpen.set(true)"
+      >
+        <span class="text-2xl" aria-hidden="true">☰</span>
+      </button>
+      <a routerLink="/projects" class="flex items-center lg:hidden">
+        <img
+          src="/assets/logo.png"
+          [attr.alt]="'brand.logoAlt' | translate"
+          class="h-auto w-[138px] max-w-[42vw] object-contain"
+        />
+      </a>
+      <div class="ms-auto text-sm font-medium text-muted">
+        <span class="hidden sm:inline">{{ 'brand.workspace' | translate }}</span>
+      </div>
+    </header>
+
+    <router-outlet />
+  </div>
+
+  <app-toast-container />
+</div>

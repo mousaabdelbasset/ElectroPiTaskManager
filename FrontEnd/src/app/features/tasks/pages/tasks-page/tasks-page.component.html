@@ -1,0 +1,84 @@
+<main class="page-container">
+  <header class="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <p class="text-sm font-bold uppercase tracking-[0.14em] text-primary">
+        {{ 'brand.workspace' | translate }}
+      </p>
+      <h1 class="mt-2 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+        {{ 'pages.tasks.title' | translate }}
+      </h1>
+      <p class="mt-2 max-w-2xl text-muted">{{ 'pages.tasks.subtitle' | translate }}</p>
+    </div>
+    <button type="button" class="btn-primary shrink-0" (click)="openCreateForm()">
+      <span aria-hidden="true">＋</span>
+      {{ 'tasks.create' | translate }}
+    </button>
+  </header>
+
+  <div class="mb-7">
+    <app-status-filter [selected]="selectedStatus()" (changed)="changeFilter($event)" />
+  </div>
+
+  @if (loading()) {
+    <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      @for (item of [1, 2, 3, 4, 5, 6]; track item) {
+        <div class="surface-card min-h-60 p-5">
+          <div class="skeleton h-6 w-24"></div>
+          <div class="skeleton mt-6 h-6 w-3/4"></div>
+          <div class="skeleton mt-4 h-4 w-full"></div>
+          <div class="skeleton mt-2 h-4 w-2/3"></div>
+          <div class="skeleton mt-14 h-10 w-full"></div>
+        </div>
+      }
+    </div>
+  } @else if (errorKey()) {
+    <app-empty-state
+      icon="!"
+      titleKey="tasks.states.errorTitle"
+      [descriptionKey]="errorKey()!"
+      actionKey="common.retry"
+      (action)="loadTasks()"
+    />
+  } @else if (tasks().length === 0) {
+    <app-empty-state
+      icon="☷"
+      titleKey="tasks.states.emptyTitle"
+      descriptionKey="tasks.states.emptyDescription"
+      actionKey="tasks.states.emptyAction"
+      (action)="openCreateForm()"
+    />
+  } @else {
+    <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      @for (task of tasks(); track task.id) {
+        <app-task-card
+          [task]="task"
+          [projectName]="projectNames().get(task.projectId) ?? null"
+          [updatingStatus]="pendingStatusTaskIds().has(task.id)"
+          (edit)="openEditForm($event)"
+          (remove)="deleteTarget.set($event)"
+          (statusChanged)="changeTaskStatus(task, $event)"
+        />
+      }
+    </div>
+  }
+
+  @if (formOpen()) {
+    <app-task-form
+      [task]="editingTask()"
+      [projects]="projects()"
+      [saving]="saving()"
+      (saved)="saveTask($event)"
+      (cancelled)="closeForm()"
+    />
+  }
+
+  @if (deleteTarget()) {
+    <app-confirm-dialog
+      titleKey="tasks.delete.title"
+      messageKey="tasks.delete.message"
+      [busy]="deleting()"
+      (confirmed)="confirmDelete()"
+      (cancelled)="deleteTarget.set(null)"
+    />
+  }
+</main>

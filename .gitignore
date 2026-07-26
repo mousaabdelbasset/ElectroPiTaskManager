@@ -1,0 +1,22 @@
+# Local secrets
+.env
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# .NET build output
+**/bin/
+**/obj/
+
+# Angular dependencies and build output
+**/node_modules/
+**/dist/
+**/.angular/
+
+# Stitch reference files
+FrontEnd/desgin/
+
+# Logs
+*.log

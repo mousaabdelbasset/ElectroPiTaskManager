@@ -1,0 +1,167 @@
+<main class="page-container">
+  @if (loading()) {
+    <div class="space-y-6">
+      <div class="skeleton h-5 w-48"></div>
+      <div class="skeleton h-12 w-2/3 max-w-xl"></div>
+      <div class="grid gap-5 lg:grid-cols-3">
+        @for (item of [1, 2, 3]; track item) {
+          <div class="surface-card min-h-64 p-5">
+            <div class="skeleton h-6 w-24"></div>
+            <div class="skeleton mt-6 h-6 w-3/4"></div>
+            <div class="skeleton mt-4 h-4 w-full"></div>
+          </div>
+        }
+      </div>
+    </div>
+  } @else if (errorKey()) {
+    <app-empty-state
+      icon="!"
+      titleKey="projects.states.detailsErrorTitle"
+      [descriptionKey]="errorKey()!"
+      actionKey="common.retry"
+      (action)="loadProject()"
+    />
+  } @else if (project(); as currentProject) {
+    <nav
+      class="mb-4 flex items-center gap-2 text-sm text-muted"
+      [attr.aria-label]="'common.breadcrumb' | translate"
+    >
+      <a routerLink="/projects" class="hover:text-primary">{{
+        'navigation.projects' | translate
+      }}</a>
+      <span aria-hidden="true">/</span>
+      <span class="font-medium text-ink">{{ currentProject.name }}</span>
+    </nav>
+
+    <header class="mb-7 flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
+      <div class="max-w-3xl">
+        <h1 class="text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+          {{ currentProject.name }}
+        </h1>
+        <p class="mt-3 leading-7 text-muted">
+          {{ currentProject.description || ('projects.noDescription' | translate) }}
+        </p>
+        <p class="mt-3 text-sm text-muted">
+          {{ 'projects.createdOn' | translate }} {{ createdDate() }}
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <button type="button" class="btn-primary" (click)="openCreateTask()">
+          <span aria-hidden="true">＋</span>
+          {{ 'tasks.create' | translate }}
+        </button>
+        <button type="button" class="btn-secondary" (click)="projectFormOpen.set(true)">
+          <span aria-hidden="true">✎</span>
+          {{ 'projects.actions.edit' | translate }}
+        </button>
+        <button type="button" class="btn-danger" (click)="deleteProjectOpen.set(true)">
+          <span aria-hidden="true">⌫</span>
+          {{ 'projects.actions.delete' | translate }}
+        </button>
+      </div>
+    </header>
+
+    <div class="mb-7">
+      <app-status-filter [selected]="selectedStatus()" (changed)="selectedStatus.set($event)" />
+    </div>
+
+    @if (currentProject.tasks.length === 0) {
+      <app-empty-state
+        icon="☷"
+        titleKey="tasks.states.projectEmptyTitle"
+        descriptionKey="tasks.states.projectEmptyDescription"
+        actionKey="tasks.states.emptyAction"
+        (action)="openCreateTask()"
+      />
+    } @else {
+      <div
+        class="grid gap-6"
+        cdkDropListGroup
+        [class.lg:grid-cols-3]="selectedStatus() === null"
+        [class.max-w-xl]="selectedStatus() !== null"
+      >
+        @for (group of taskGroups(); track group.status) {
+          <section>
+            <header class="mb-3 flex items-center gap-2 px-1">
+              <h2 class="text-xs font-bold uppercase tracking-[0.12em] text-muted">
+                {{ statusLabelKey(group.status) | translate }}
+              </h2>
+              <span class="rounded-full bg-surface-strong px-2 py-0.5 text-xs font-bold text-muted">
+                {{ group.tasks.length }}
+              </span>
+            </header>
+            <div
+              cdkDropList
+              [cdkDropListData]="group.tasks"
+              class="min-h-28 space-y-4 rounded-xl"
+              (cdkDropListDropped)="dropTask($event, group.status)"
+            >
+              @for (task of group.tasks; track task.id) {
+                <div
+                  cdkDrag
+                  [cdkDragData]="task"
+                  [cdkDragDisabled]="pendingStatusTaskIds().has(task.id)"
+                  class="cursor-grab touch-pan-y active:cursor-grabbing"
+                >
+                  <app-task-card
+                    [task]="task"
+                    [updatingStatus]="pendingStatusTaskIds().has(task.id)"
+                    (edit)="openEditTask($event)"
+                    (remove)="deleteTaskTarget.set($event)"
+                    (statusChanged)="changeTaskStatus(task, $event)"
+                  />
+                </div>
+              } @empty {
+                <div
+                  class="rounded-xl border border-dashed border-border p-6 text-center text-sm text-muted"
+                >
+                  {{ 'tasks.states.columnEmpty' | translate }}
+                </div>
+              }
+            </div>
+          </section>
+        }
+      </div>
+    }
+
+    @if (projectFormOpen()) {
+      <app-project-form
+        [project]="currentProject"
+        [saving]="savingProject()"
+        (saved)="saveProject($event)"
+        (cancelled)="projectFormOpen.set(false)"
+      />
+    }
+
+    @if (taskFormOpen()) {
+      <app-task-form
+        [task]="editingTask()"
+        [projects]="projectOptions()"
+        [lockedProjectId]="currentProject.id"
+        [saving]="savingTask()"
+        (saved)="saveTask($event)"
+        (cancelled)="taskFormOpen.set(false)"
+      />
+    }
+
+    @if (deleteTaskTarget()) {
+      <app-confirm-dialog
+        titleKey="tasks.delete.title"
+        messageKey="tasks.delete.message"
+        [busy]="deletingTask()"
+        (confirmed)="confirmTaskDelete()"
+        (cancelled)="deleteTaskTarget.set(null)"
+      />
+    }
+
+    @if (deleteProjectOpen()) {
+      <app-confirm-dialog
+        titleKey="projects.delete.title"
+        messageKey="projects.delete.message"
+        [busy]="deletingProject()"
+        (confirmed)="confirmProjectDelete()"
+        (cancelled)="deleteProjectOpen.set(false)"
+      />
+    }
+  }
+</main>

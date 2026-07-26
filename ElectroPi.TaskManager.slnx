@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ElectroPi.TaskManager.Api/ElectroPi.TaskManager.Api.csproj" />
+  <Project Path="ElectroPi.TaskManager.Application/ElectroPi.TaskManager.Application.csproj" />
+  <Project Path="ElectroPi.TaskManager.Domain/ElectroPi.TaskManager.Domain.csproj" />
+  <Project Path="ElectroPi.TaskManager.Infrastructure/ElectroPi.TaskManager.Infrastructure.csproj" />
+</Solution>
